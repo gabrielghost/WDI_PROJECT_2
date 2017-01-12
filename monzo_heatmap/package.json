@@ -2,7 +2,7 @@
   "name": "monzo_heatmap",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,6 +15,7 @@
     "express": "^4.14.0",
     "mongoose": "^4.7.6",
     "monzo-api": "^1.0.6",
+    "morgan": "^1.7.0",
     "nodemon": "^1.11.0",
     "request-promise": "^4.1.1"
   },

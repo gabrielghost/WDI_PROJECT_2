@@ -1,0 +1,1 @@
+"use strict";console.log("working map");var App=App||{},google=google;App.mapSetup=function(){var p=document.getElementById("map-canvas"),e={zoom:12,center:new google.maps.LatLng(51.506178,(-.088369)),mapTypeId:google.maps.MapTypeId.ROADMAP};this.map=new google.maps.Map(p,e)},$(App.mapSetup.bind(App));
