@@ -8,6 +8,8 @@ router.route('/')
   .get(statics.home);
 router.route('/callback')
   .get(monzoAuth.auth);
+router.route('/heatmap')
+  .get(statics.heatmap);
 
 
 module.exports = router;
