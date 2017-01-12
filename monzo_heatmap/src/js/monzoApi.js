@@ -11,25 +11,27 @@ App.init = function(){
   App.apiUrl = 'http://localhost:3000/api';
   App.redirect_uri = 'http%3A%2F%2Flocalhost%3A7000%2Fcallback';
   App.monzoAuth();
+  $('.button-collapse').sideNav();
 };
 
 App.monzoAuth = function(){
   console.log('running');
   $.get('http://localhost:3000/api/monzo-redirect')
   .done(data => {
-    $('.monzo').html(`<a target="_blank" href="https://auth.getmondo.co.uk/?redirect_uri=${App.redirect_uri}&client_id=${data.url}&response_type=code">login to monzo</a>`);
+    $('.monzo').html(`<a class="btn btn-lg btn-primary HomeView__login-button___3I_YY" href="https://auth.getmondo.co.uk/?redirect_uri=${App.redirect_uri}&client_id=${data.url}&response_type=code" >Sign in with your Monzo account</a>`);
   });
+  App.monzoCallback();
 };
 
 
-// App.monzoCallback = function(req, res){
-//   console.log('monzoAuth running clientside');
-//   $.get('http://localhost:3000/callback').done(data => {
-//     console.log(data);
-//   });
+App.monzoCallback = function(req, res){
+  console.log('monzoAuth running clientside');
+  $.get('http://localhost:7000/callback').done(data => {
+    console.log(data);
+    res.redirect('/');
+  });
   // getAccessToken(code, state);
-  // return res.redirect('/');
-// };
+};
 
 $(App.init.bind(App));
 

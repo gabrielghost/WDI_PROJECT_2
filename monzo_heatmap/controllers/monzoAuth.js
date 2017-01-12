@@ -1,14 +1,14 @@
 const config = require('../config/config');
-// const path = require('path');
+const rp = require('request-promise');
+const path = require('path');
 
 function monzoReroute(req, res){
   var url = config.clientId;
   return res.json({ url});
 }
 function monzoAuth(req, res){
-  console.log('monzoAuth running serverside');
-  console.log(req.query);
-  res.redirect('/');
+  var query = req.query;
+  return res.status(200).json(query);
 }
 
 // function getAccessToken(code, state, req, res){
