@@ -15,27 +15,31 @@ App.$header = $('header');
 
 App.heatMapArray = [];
 
-if (params.code) {
-  var options = {
-    method: 'POST',
-    uri: 'https://api.monzo.com/oauth2/token'
-  };
-  options.data = {
-    grant_type: 'authorization_code',
-    client_id: window.localStorage.getItem('clientId'),
-    client_secret: window.localStorage.getItem('clientSecret'),
-    redirect_uri: App.redirect_uri_r,
-    code: getURLParameter('code')
-  };
-  $.post(options.uri, options.data).done(function (data) {
-    console.log(data);
-    App.setToken(data.access_token);
-    App.setId(data.user_id);
-    App.home();
-    App.getAcctId();
-    // App.reqTransactions();
-  });
-}
+App.init = function () {
+  $('.logout').on('click', this.logout.bind(this));
+  $('.button-collapse').sideNav();
+  if (params.code) {
+    var options = {
+      method: 'POST',
+      uri: 'https://api.monzo.com/oauth2/token'
+    };
+    options.data = {
+      grant_type: 'authorization_code',
+      client_id: window.localStorage.getItem('clientId'),
+      client_secret: window.localStorage.getItem('clientSecret'),
+      redirect_uri: App.redirect_uri_r,
+      code: getURLParameter('code')
+    };
+    $.post(options.uri, options.data).done(function (data) {
+      console.log(data);
+      App.setToken(data.access_token);
+      App.setId(data.user_id);
+      // App.home();
+      App.getAcctId();
+    });
+    App.validTokenCheck();
+  }
+};
 
 App.home = function () {
   $.get('http://localhost:3000/');
@@ -54,7 +58,7 @@ App.validTokenCheck = function () {
       App.getAcctId();
     }).fail(function (data) {
       console.log('tokenfail');
-      createForm();
+      App.logout();
     });
   }
 };
@@ -68,12 +72,14 @@ App.getAcctId = function () {
     }
   }).done(function (data) {
     console.log(data);
-    console.log(data.accounts);
+    App.setAcctId(data.accounts[0].id);
+    App.setAcctDesc(data.accounts[0].description);
+    // App.reqTransactions();
   });
 };
 
 App.reqTransactions = function () {
-  var url = 'https://api.monzo.com/transactions?expand[]=merchant&account_id=' + App.getId();
+  var url = 'https://api.monzo.com/transactions?expand[]=merchant&account_id=' + App.getAcctId();
   $.ajax({
     url: url,
     beforeSend: function beforeSend(xhr) {
@@ -108,8 +114,7 @@ App.loggedOutState = function () {
   $('.loggedOut').show();
 };
 
-App.logout = function (e) {
-  e.preventDefault();
+App.logout = function () {
   this.removeToken();
   this.loggedOutState();
 };
@@ -131,21 +136,26 @@ function getJsonFromUrl() {
 App.setToken = function (token) {
   return window.localStorage.setItem('token', token);
 };
+App.getToken = function () {
+  return window.localStorage.getItem('token');
+};
 App.setId = function (id) {
   return window.localStorage.setItem('user_id', id);
 };
 App.getId = function () {
   return window.localStorage.getItem('user_id');
 };
-
-App.getToken = function () {
-  return window.localStorage.getItem('token');
+App.setAcctId = function (acctId) {
+  return window.localStorage.setItem('acctId', acctId);
 };
-
-App.init = function () {
-  $('.logout').on('click', this.logout.bind(this));
-  $('.button-collapse').sideNav();
-  App.validTokenCheck();
+App.getAcctId = function () {
+  return window.localStorage.getItem('acctId');
+};
+App.setAcctDesc = function (acctDesc) {
+  return window.localStorage.setItem('acctDesc', acctDesc);
+};
+App.getAcctDesc = function () {
+  return window.localStorage.getItem('acctDesc');
 };
 
 App.login = function () {
