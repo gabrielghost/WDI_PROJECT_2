@@ -6,5 +6,7 @@ const statics = require('../controllers/statics');
 
 router.route('/monzo-redirect')
   .get(monzoAuth.rerouter);
+router.route('/login')
+    .get(monzoAuth.init);
 
 module.exports = router;
