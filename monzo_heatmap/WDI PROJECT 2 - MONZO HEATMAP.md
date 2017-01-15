@@ -49,7 +49,14 @@ Day 5 - Sunday
 
 AIMS
 
-I intend to polish the login part - functionally at least so that another person with a dev account may load up their information into the site - ready for the presentation on Wednesday. This shouldn't be too difficult and I'm almost there with it already.
+- Tidy up the flow in general and work out the best way of managing server side and client side functions.
+
+- I intend to polish the login part - functionally at least so that another person with a dev account may load up their information into the site - ready for the presentation on Wednesday. This shouldn't be too difficult and I'm almost there with it already.
+
+- Have top 5 places, ordered by total spend
+
+- Explore the possibility of multiple heatmaps for different genres
+
 
 
 
