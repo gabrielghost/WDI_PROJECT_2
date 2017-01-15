@@ -8,7 +8,7 @@ var params = getJsonFromUrl();
 App.apiUrl = 'http://localhost:3000/api';
 App.clientId = 'oauthclient_00009GHhx8useUIPuaxl2X';
 App.clientSecret = 'MVKUHgeLLnTeQ8eFqWNLbSTphaLJ4G8PQTZcGbXo2eZApnOtoJj5pHHtLobjTI835LwfkWHJpBV3gQ8HUDtg';
-App.redirect_uri = 'http%3A%2F%2Flocalhost%3A7000%2Fcallback';
+App.redirectUri = 'http%3A%2F%2Flocalhost%3A7000%2Fcallback';
 App.account_id = 'acc_00009FsRvpC42WhUgitVVx';
 
 App.$monzo = $('.monzo');
@@ -58,8 +58,7 @@ App.loggedInState = function () {
 };
 
 App.loggedOutState = function () {
-  App.toggleHeatmap();
-  App.monzoLoginForm();
+  createForm();
   $('.loggedIn').hide();
   $('.loggedOut').show();
 };
@@ -94,8 +93,6 @@ App.getToken = function () {
 
 App.init = function () {
   $('.logout').on('click', this.logout.bind(this));
-  $('.login').on('click', this.login.bind(this));
-  // App.$monzo.on('submit', 'form', this.handleForm);
   $('.button-collapse').sideNav();
   if (this.getToken()) {
     App.loggedInState();
@@ -104,46 +101,70 @@ App.init = function () {
   }
 };
 
-App.login = function (e) {
-  console.log(e);
-  e.preventDefault();
-  var clientIdField = $('.clientId');
-  var clientSecretField = $('.clientSecret');
-  // set client id and secret
-  var clientId = clientIdField.val();
-  console.log(clientIdField.val());
-  var clientSecret = clientSecretField.val();
-  console.log(clientSecretField.val());
-
-  var url = 'https://auth.getmondo.co.uk/?client_id=' + clientId + '&redirect_uri=' + App.redirectUri + '&response_type=code&state=';
-
-  if (clientId && clientSecret) {
-    window.location.href = url;
-  }
+App.login = function () {
+  console.log('app login');
 };
 
 App.clicked = function () {
   console.log('clicked');
 };
 
-App.monzoLoginForm = function () {
-  console.log('monzoLoginModal');
-  $('.monzo').html('\n    <div id="modal1" class="modal">\n      <div class="modal-content">\n      <div class="monzo_form loggedOut">\n      <input type="text" class="clientId" placeholder="clientId" name="clientId">\n      <input type="text" class="clientSecret" placeholder="clientSecret" name="clientSecret">\n      <a class="btn btn-lg btn-primary HomeView__login-button___3I_YY login" href="">Login</a>\n      </div>\n      </div>\n      <div class="modal-footer">\n        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>\n      </div>\n    </div>\n    ');
-  $('#modal1').modal('open');
-};
+function createForm() {
+  console.log('form created');
+  $('.login').on('click', function (event) {
+    event.preventDefault();
+    console.log('clicked');
+    // set client id and secret
+    var clientId = $('.clientId').val();
+    console.log(clientId);
+    var clientSecret = $('.clientSecret').val();
+    console.log(clientSecret);
 
-App.handleForm = function (e) {
-  e.preventDefault();
+    var url = 'https://auth.getmondo.co.uk/?client_id=' + clientId + '&redirect_uri=' + App.redirectUri + '&response_type=code&state=';
 
-  var url = '' + App.apiUrl + $(this).attr('action');
-  var method = $(this).attr('method');
-  var data = $(this).serialize();
-
-  return App.ajaxRequest(url, method, data, function (data) {
-    if (data.token) App.setToken(data.token);
-    App.loggedInState();
+    if (clientId && clientSecret) {
+      window.location.href = url;
+    }
   });
-};
+}
+
+// App.createForm = function(){
+//   // $('.monzo').html(`
+//   //   <div class="monzo_form loggedOut">
+//   //   <input type="text" class="clientId" placeholder="clientId" name="clientId">
+//   //   <input type="text" class="clientSecret" placeholder="clientSecret" name="clientSecret">
+//   //   <a class="button login" href="">Login</a>
+//   //   </div>
+//   //   `);
+//   App.$loginButton.on('click', function(e) {
+//     console.log('clicked?');
+//     e.preventDefault();
+//     const clientIdField = $('.clientId');
+//     const clientSecretField = $('.clientSecret');
+//     const clientId = clientIdField.val();
+//     console.log(clientId);
+//     console.log(clientSecret);
+//     const clientSecret = clientSecretField.val();
+//     var url = `https://auth.getmondo.co.uk/?client_id=${clientId}&redirect_uri=${App.redirectUri}&response_type=code&state=`;
+//
+//     if(clientId && clientSecret) {
+//       window.location.href = url;
+//     }
+//   });
+// };
+
+// App.handleForm = function(e){
+//   if (e) e.preventDefault();
+//   const url    = `${App.apiUrl}${$(this).attr('action')}`;
+//   const method = $(this).attr('method');
+//   const data   = $(this).serialize();
+//
+//   return App.ajaxRequest(url, method, data, data => {
+//     if (data.token) App.setToken(data.token);
+//     App.loggedInState();
+//   });
+// };
+
 
 // App.monzoCallback = function(req, res){
 //   console.log('monzoAuth running clientside');

@@ -16,7 +16,6 @@
   <script src="/js/map.js" charset="utf-8"></script>
 
 </head>
-<body>
   <header>
     <!-- <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +48,6 @@
 <img src="/images/monzo_icon.png" class="site_logo" alt="" height="50px">
   </header>
   <body>
-
   <ul id="slide-out" class="side-nav">
       <li><div class="userView">
         <div class="background">
@@ -65,7 +63,12 @@
       <li><a class="subheader">Subheader</a></li>
       <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
     </ul>
-<div class="monzo"></div>
+<div class="monzo">
+  <div class="monzo_form loggedOut">
+<input type="text" class="clientId" placeholder="clientId" name="clientId">
+<input type="text" class="clientSecret" placeholder="clientSecret" name="clientSecret">
+<a class="button login" href="">Login</a>
+</div></div>
      <div id="map"></div>
 </body>
 </html>
