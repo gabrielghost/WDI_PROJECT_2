@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>monzoheatmap</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="/css/style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+  <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmAPvKiTVFQ_cBgrvHQAItCnfXgbzaFJs&libraries=visualization">
+</script>
+  <script src="/js/monzoApi.js" charset="utf-8"></script>
+  <script src="/js/map.js" charset="utf-8"></script>
+</head>
+  <header>
+  </header>
+  <body>
+    <div class="sidebar">
+      <img src="/images/monzo_icon.png" class="site_logo" alt="" height="75px">
+      <a href="https://auth.getmondo.co.uk/?client_id=oauthclient_00009GHhx8useUIPuaxl2X&redirect_uri=http%3A%2F%2Flocalhost%3A7000%2Fcallback&response_type=code&state=">quick login</a>
+      <a class="logout" href="#">logout</a>
+      <div class="monzo"></div>
+    </div>
+             <div id="map"></div>
+</body>
+</html>
