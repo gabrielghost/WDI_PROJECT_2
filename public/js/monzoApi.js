@@ -4,7 +4,6 @@ var App = App || {};
 var google = google;
 
 var params = getJsonFromUrl();
-var authCode = getURLParameter('code');
 
 App.apiUrl = 'http://localhost:3000/api';
 App.redirectUri = 'http%3A%2F%2Flocalhost%3A7000%2Fcallback';
@@ -17,7 +16,6 @@ App.heatMapArray = [];
 
 App.init = function () {
   $('.logout').on('click', this.logout.bind(this));
-  $('.button-collapse').sideNav();
   if (params.code) {
     var options = {
       method: 'POST',
@@ -28,16 +26,17 @@ App.init = function () {
       client_id: window.localStorage.getItem('clientId'),
       client_secret: window.localStorage.getItem('clientSecret'),
       redirect_uri: App.redirect_uri_r,
-      code: getURLParameter('code')
+      code: getURLParamsMonzo('code')
     };
     $.post(options.uri, options.data).done(function (data) {
       console.log(data);
       App.setToken(data.access_token);
       App.setId(data.user_id);
       // App.home();
-      App.getAcctId();
+      App.getAcctIdFromMonzo();
     });
-    App.validTokenCheck();
+  } else {
+    validTokenCheck();
   }
 };
 
@@ -45,7 +44,7 @@ App.home = function () {
   $.get('http://localhost:3000/');
 };
 
-App.validTokenCheck = function () {
+function validTokenCheck() {
   if (App.getToken()) {
     var url = 'https://api.monzo.com/ping/whoami';
     $.ajax({
@@ -55,15 +54,17 @@ App.validTokenCheck = function () {
       }
     }).done(function (data) {
       console.log(data);
-      App.getAcctId();
+      App.getAcctIdFromMonzo();
     }).fail(function (data) {
       console.log('tokenfail');
+      console.log(data);
       App.logout();
     });
   }
-};
+}
 
-App.getAcctId = function () {
+App.getAcctIdFromMonzo = function () {
+  console.log('getAcctId firing');
   var url = 'https://api.monzo.com/accounts';
   $.ajax({
     url: url,
@@ -74,7 +75,10 @@ App.getAcctId = function () {
     console.log(data);
     App.setAcctId(data.accounts[0].id);
     App.setAcctDesc(data.accounts[0].description);
-    // App.reqTransactions();
+    App.reqTransactions();
+  }).fail(function (data) {
+    console.log('getAcctId fail');
+    console.log(data);
   });
 };
 
@@ -86,9 +90,10 @@ App.reqTransactions = function () {
       return xhr.setRequestHeader('Authorization', 'Bearer ' + App.getToken());
     }
   }).done(function (data) {
-    App.heatMapGen(data);
     console.log(data);
+    App.heatMapGen(data);
   }).fail(function (data) {
+    console.log(data);
     console.log('reqTransactions error');
   });
 };
@@ -115,11 +120,18 @@ App.loggedOutState = function () {
 };
 
 App.logout = function () {
-  this.removeToken();
+  console.log('logged out massive');
+  //toggle off heatmap
+  App.toggleHeatmap();
+  //clears all data from local memory
+  this.removeAllLocalStorage();
+  //clears all data from dynamic memory
+  App.heatMapArray = [];
+  //makes it look like it's all logged out and proper
   this.loggedOutState();
 };
 
-App.removeToken = function () {
+App.removeAllLocalStorage = function () {
   return window.localStorage.clear();
 };
 
@@ -134,25 +146,25 @@ function getJsonFromUrl() {
 }
 
 App.setToken = function (token) {
-  return window.localStorage.setItem('token', token);
+  window.localStorage.setItem('token', token);
 };
 App.getToken = function () {
   return window.localStorage.getItem('token');
 };
 App.setId = function (id) {
-  return window.localStorage.setItem('user_id', id);
+  window.localStorage.setItem('user_id', id);
 };
 App.getId = function () {
   return window.localStorage.getItem('user_id');
 };
 App.setAcctId = function (acctId) {
-  return window.localStorage.setItem('acctId', acctId);
+  window.localStorage.setItem('acctId', acctId);
 };
 App.getAcctId = function () {
   return window.localStorage.getItem('acctId');
 };
 App.setAcctDesc = function (acctDesc) {
-  return window.localStorage.setItem('acctDesc', acctDesc);
+  window.localStorage.setItem('acctDesc', acctDesc);
 };
 App.getAcctDesc = function () {
   return window.localStorage.getItem('acctDesc');
@@ -186,55 +198,13 @@ function createForm() {
   });
 }
 
-/**
- * Get a paramater from the URL
- * http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/
- */
+//http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/
 
-function getURLParameter(name) {
+
+function getURLParamsMonzo(name) {
   var param = decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 
   return param;
-}
-
-function getAccessToken() {
-  var url = 'https://api.getmondo.co.uk/oauth2/token';
-  var data = {
-    grant_type: 'authorization_code',
-    client_id: 'oauthclient_00009GHhx8useUIPuaxl2X',
-
-    client_secret: 'MVKUHgeLLnTeQ8eFqWNLbSTphaLJ4G8PQTZcGbXo2eZApnOtoJj5pHHtLobjTI835LwfkWHJpBV3gQ8HUDtg',
-    redirect_uri: App.redirect_uri_r,
-    code: authCode
-  };
-
-  makeRequest(url, data, setAccessToken);
-}
-
-function makeRequest(url, data, callback) {
-  var request = {
-    dataType: "json",
-    url: url,
-    method: 'GET',
-    cache: false,
-    async: false,
-    success: callback,
-    error: requestError
-  };
-
-  if (url == 'https://api.getmondo.co.uk/oauth2/token') {
-    request.method = 'POST';
-  }
-
-  if (data) {
-    request.data = data;
-  }
-
-  if (accessToken) {
-    request.headers = { 'Authorization': 'Bearer ' + accessToken };
-  }
-
-  $.ajax(request);
 }
 
 $(App.init.bind(App));
