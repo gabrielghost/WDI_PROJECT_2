@@ -61,7 +61,7 @@ function validTokenCheck() {
       App.logout();
     });
   }
-}
+};
 
 App.getAcctIdFromMonzo = function () {
   console.log('getAcctId firing');
@@ -104,7 +104,12 @@ App.heatMapGen = function (data) {
       App.heatMapArray.push({ location: new google.maps.LatLng(transaction.merchant.address.latitude, transaction.merchant.address.longitude), weight: Math.abs(transaction.amount / 100) });
     }
     App.initMap();
+    App.greeting();
   });
+};
+
+App.greeting = function () {
+  $('.greeting').html('\n      <p>Hello ' + App.getAcctDesc().split(' ')[0] + '!</p>\n      ');
 };
 
 App.loggedInState = function () {
@@ -113,7 +118,6 @@ App.loggedInState = function () {
 };
 
 App.loggedOutState = function () {
-  App.toggleHeatmap();
   createForm();
   $('.loggedIn').hide();
   $('.loggedOut').show();
@@ -122,7 +126,7 @@ App.loggedOutState = function () {
 App.logout = function () {
   console.log('logged out massive');
   //toggle off heatmap
-  App.toggleHeatmap();
+  toggleHeatmap();
   //clears all data from local memory
   this.removeAllLocalStorage();
   //clears all data from dynamic memory
@@ -130,6 +134,14 @@ App.logout = function () {
   //makes it look like it's all logged out and proper
   this.loggedOutState();
 };
+
+function toggleHeatmap() {
+  var heatmap = new google.maps.visualization.HeatmapLayer({
+    data: App.heatMapArray,
+    map: App.map
+  });
+  heatmap.setMap(heatmap.getMap() ? null : App.map);
+}
 
 App.removeAllLocalStorage = function () {
   return window.localStorage.clear();

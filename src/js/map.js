@@ -21,13 +21,7 @@ App.initMap = function() {
 };
 
 //TOGGLE HEATMAP ON OFF
-App.toggleHeatmap = function() {
-  var heatmap = new google.maps.visualization.HeatmapLayer({
-    data: getPoints(),
-    map: App.map
-  });
-  heatmap.setMap(heatmap.getMap() ? null : App.map);
-};
+
 
 // //HEATMAP GRADIENT HERE
 // App.changeGradient = function() {
