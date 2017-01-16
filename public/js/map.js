@@ -14,11 +14,14 @@ App.initMap = function () {
     zoomControl: true,
     disableDefaultUI: true
   });
-  var heatmap = new google.maps.visualization.HeatmapLayer({
+  App.heatmap = new google.maps.visualization.HeatmapLayer({
     data: getPoints(),
-    map: App.map
+    map: App.map,
+    opacity: 1
   });
-  heatmap.set('radius', heatmap.get('radius') ? null : 20);
+  var gradient = ['rgba(0, 255, 255, 0)', 'rgba(30, 120, 140, 1)', 'rgba(154, 189, 169, 1)', 'rgba(234, 209, 159, 1)', 'rgba(230, 75, 95, 1)'];
+  App.heatmap.set('radius', App.heatmap.get('radius') ? null : 30);
+  App.heatmap.set('gradient', App.heatmap.get('gradient') ? null : gradient);
 };
 
 //TOGGLE HEATMAP ON OFF
@@ -26,23 +29,8 @@ App.initMap = function () {
 
 // //HEATMAP GRADIENT HERE
 // App.changeGradient = function() {
-//   var gradient = [
-//     'rgba(0, 255, 255, 0)',
-//     'rgba(0, 255, 255, 1)',
-//     'rgba(0, 191, 255, 1)',
-//     'rgba(0, 127, 255, 1)',
-//     'rgba(0, 63, 255, 1)',
-//     'rgba(0, 0, 255, 1)',
-//     'rgba(0, 0, 223, 1)',
-//     'rgba(0, 0, 191, 1)',
-//     'rgba(0, 0, 159, 1)',
-//     'rgba(0, 0, 127, 1)',
-//     'rgba(63, 0, 91, 1)',
-//     'rgba(127, 0, 63, 1)',
-//     'rgba(191, 0, 31, 1)',
-//     'rgba(255, 0, 0, 1)'
-//   ];
-//   App.heatmap.set('gradient', App.heatmap.get('gradient') ? null : gradient);
+
+//
 // };
 
 // App.changeRadius = function() {

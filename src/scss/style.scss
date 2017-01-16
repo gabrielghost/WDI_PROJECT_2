@@ -33,27 +33,9 @@ html, body {
   z-index: 1;
 }
 .sidebar {
-    width: 100%;
-    height: 50%;
-    padding: 20px;
-
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-    background: #fff;
-
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 999;
-
-    @media screen and (min-width: 750px) {
-        width: 350px;
-        height: 100%;
-
-        top: 0;
-        bottom: 0;
-    }
+background-color: #16243b;
+width: 25%;
+height: 100%;
 }
 
 .sidebar__heading {

@@ -59,7 +59,7 @@ function validTokenCheck() {
       App.logout();
     });
   }
-};
+}
 
 App.getAcctIdFromMonzo = function() {
   console.log('getAcctId firing');
@@ -90,6 +90,7 @@ App.reqTransactions = function() {
   }).done(data => {
     console.log(data);
     App.heatMapGen(data);
+    App.sortData(data);
   }).fail(data => {
     console.log(data);
     console.log('reqTransactions error');
@@ -103,6 +104,53 @@ App.heatMapGen = function(data){
     }
     App.initMap();
     App.greeting();
+  });
+};
+
+App.sortData = function(data){
+  $.each(data.transactions, (i, transaction) => {
+    if (transaction.merchant) {
+      setTimeout(() => {
+        const transactionDate   = transaction.created;
+        const transactionAmount = transaction.amount;
+        const transactionDescription   = transaction.description;
+        const lat               = transaction.merchant.address.latitude;
+        const lng              = transaction.merchant.address.longitude;
+        const img              = transaction.merchant.logo;
+        const dataProcessed = {
+          lat: lat,
+          lng: lng,
+          title: transactionDescription,
+          info: transactionAmount,
+          img: img
+        };
+        App.markers(dataProcessed);
+      }, i * 50);
+    }
+  });
+};
+
+App.markers = function(dataProcessed){
+  console.log(dataProcessed.lat);
+  const latlng = new google.maps.LatLng(dataProcessed.lat, dataProcessed.lng);
+  const marker = new google.maps.Marker({
+    position: latlng,
+    map: App.map,
+    animation: google.maps.Animation.DROP
+  });
+  App.addInfoWindowForLocation(dataProcessed, marker);
+};
+
+App.addInfoWindowForLocation = function(dataProcessed, marker) {
+  google.maps.event.addListener(marker, 'click', () => {
+    console.log(location);
+    console.log(dataProcessed.title)
+    if (typeof this.infoWindow !== 'undefined')
+      this.infoWindow.close();
+    this.infoWindow = new google.maps.InfoWindow({
+      content: `<img src="${dataProcessed.img}" height="50px"><p>${dataProcessed.title}</p><p>${dataProcessed.info}</p>`
+    });
+    this.infoWindow.open(this.map, marker);
   });
 };
 
@@ -125,8 +173,10 @@ App.loggedOutState = function(){
 
 App.logout = function(){
   console.log('logged out massive');
+  //toggle off markers
+  // App.setMapOnAll(null);
   //toggle off heatmap
-  toggleHeatmap();
+  App.heatmap.setMap(null);
   //clears all data from local memory
   this.removeAllLocalStorage();
   //clears all data from dynamic memory
@@ -134,14 +184,6 @@ App.logout = function(){
   //makes it look like it's all logged out and proper
   this.loggedOutState();
 };
-
-function toggleHeatmap() {
-  var heatmap = new google.maps.visualization.HeatmapLayer({
-    data: App.heatMapArray,
-    map: App.map
-  });
-  heatmap.setMap(heatmap.getMap() ? null : App.map);
-}
 
 App.removeAllLocalStorage = function(){
   return window.localStorage.clear();
