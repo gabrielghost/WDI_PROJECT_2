@@ -113,16 +113,22 @@ App.sortData = function(data){
       setTimeout(() => {
         const transactionDate   = transaction.created;
         const transactionAmount = transaction.amount;
-        const transactionDescription   = transaction.description;
+        const transactionDescription   = transaction.merchant.metadata.google_places_name;
+        const transactionWebsite   = transaction.merchant.metadata.website;
+        const transactionTwitter   = transaction.merchant.metadata.twitter;
         const lat               = transaction.merchant.address.latitude;
         const lng              = transaction.merchant.address.longitude;
         const img              = transaction.merchant.logo;
+        const category              = transaction.merchant.category;
         const dataProcessed = {
           lat: lat,
           lng: lng,
           title: transactionDescription,
-          info: transactionAmount,
-          img: img
+          price: transactionAmount,
+          img: img,
+          category: category,
+          website: transactionWebsite,
+          twitter: transactionTwitter
         };
         App.markers(dataProcessed);
       }, i * 50);
@@ -131,24 +137,48 @@ App.sortData = function(data){
 };
 
 App.markers = function(dataProcessed){
-  console.log(dataProcessed.lat);
+  console.log(dataProcessed.category);
+  const icons = {
+    general: {
+      icon: '/images/pinIcons/general.png'
+    },
+    groceries: {
+      icon: '/images/pinIcons/groceries.png'
+    },
+    eating_out: {
+      icon: '/images/pinIcons/eating_out.png'
+    },
+    entertainment: {
+      icon: '/images/pinIcons/entertainment.png'
+    },
+    transport: {
+      icon: '/images/pinIcons/transport.png'
+    }
+  };
   const latlng = new google.maps.LatLng(dataProcessed.lat, dataProcessed.lng);
+  console.log(dataProcessed.category);
   const marker = new google.maps.Marker({
     position: latlng,
     map: App.map,
-    animation: google.maps.Animation.DROP
+    animation: google.maps.Animation.DROP,
+    icon: icons[dataProcessed.category].icon
   });
   App.addInfoWindowForLocation(dataProcessed, marker);
 };
 
 App.addInfoWindowForLocation = function(dataProcessed, marker) {
   google.maps.event.addListener(marker, 'click', () => {
-    console.log(location);
-    console.log(dataProcessed.title)
     if (typeof this.infoWindow !== 'undefined')
       this.infoWindow.close();
     this.infoWindow = new google.maps.InfoWindow({
-      content: `<img src="${dataProcessed.img}" height="50px"><p>${dataProcessed.title}</p><p>${dataProcessed.info}</p>`
+      content: `<div class="transactionInfo">
+      <ul>
+      <li><img src="${dataProcessed.img}" height="50px"></li>
+      <li><a href="${dataProcessed.website}" target="_blank">${dataProcessed.title}</a></li>
+      <li><p>£${(Math.abs(dataProcessed.price/100)).toFixed(2)}</p></li>
+      </ul>
+      </div>
+      `
     });
     this.infoWindow.open(this.map, marker);
   });

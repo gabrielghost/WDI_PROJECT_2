@@ -1,1 +1,1 @@
-#map{height:90%}body,html{height:100%;margin:0;padding:0}.site_logo{position:relative;left:45%;display:block;z-index:1;text-align:center}.burger{z-index:1}
+#map,.sidebar,body,html{background-color:#16243b}#map{height:90%;width:100%;position:fixed!important;bottom:0;left:0}body,html{height:80%;margin:0;padding:0}.site_logo{position:absolute;display:inline;left:46%;margin:0 auto;z-index:1;text-align:center}.logout{color:#fff;font-size:15px}.greeting{color:#fff;font-size:20px}.sidebar{width:20%;height:100%}.transactionInfo li{list-style-type:none}

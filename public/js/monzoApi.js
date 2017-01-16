@@ -115,16 +115,22 @@ App.sortData = function (data) {
       setTimeout(function () {
         var transactionDate = transaction.created;
         var transactionAmount = transaction.amount;
-        var transactionDescription = transaction.description;
+        var transactionDescription = transaction.merchant.metadata.google_places_name;
+        var transactionWebsite = transaction.merchant.metadata.website;
+        var transactionTwitter = transaction.merchant.metadata.twitter;
         var lat = transaction.merchant.address.latitude;
         var lng = transaction.merchant.address.longitude;
         var img = transaction.merchant.logo;
+        var category = transaction.merchant.category;
         var dataProcessed = {
           lat: lat,
           lng: lng,
           title: transactionDescription,
-          info: transactionAmount,
-          img: img
+          price: transactionAmount,
+          img: img,
+          category: category,
+          website: transactionWebsite,
+          twitter: transactionTwitter
         };
         App.markers(dataProcessed);
       }, i * 50);
@@ -133,12 +139,31 @@ App.sortData = function (data) {
 };
 
 App.markers = function (dataProcessed) {
-  console.log(dataProcessed.lat);
+  console.log(dataProcessed.category);
+  var icons = {
+    general: {
+      icon: '/images/pinIcons/general.png'
+    },
+    groceries: {
+      icon: '/images/pinIcons/groceries.png'
+    },
+    eating_out: {
+      icon: '/images/pinIcons/eating_out.png'
+    },
+    entertainment: {
+      icon: '/images/pinIcons/entertainment.png'
+    },
+    transport: {
+      icon: '/images/pinIcons/transport.png'
+    }
+  };
   var latlng = new google.maps.LatLng(dataProcessed.lat, dataProcessed.lng);
+  console.log(dataProcessed.category);
   var marker = new google.maps.Marker({
     position: latlng,
     map: App.map,
-    animation: google.maps.Animation.DROP
+    animation: google.maps.Animation.DROP,
+    icon: icons[dataProcessed.category].icon
   });
   App.addInfoWindowForLocation(dataProcessed, marker);
 };
@@ -147,11 +172,9 @@ App.addInfoWindowForLocation = function (dataProcessed, marker) {
   var _this = this;
 
   google.maps.event.addListener(marker, 'click', function () {
-    console.log(location);
-    console.log(dataProcessed.title);
     if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
     _this.infoWindow = new google.maps.InfoWindow({
-      content: '<img src="' + dataProcessed.img + '" height="50px"><p>' + dataProcessed.title + '</p><p>' + dataProcessed.info + '</p>'
+      content: '<div class="transactionInfo">\n      <ul>\n      <li><img src="' + dataProcessed.img + '" height="50px"></li>\n      <li><a href="' + dataProcessed.website + '" target="_blank">' + dataProcessed.title + '</a></li>\n      <li><p>\xA3' + Math.abs(dataProcessed.price / 100).toFixed(2) + '</p></li>\n      </ul>\n      </div>\n      '
     });
     _this.infoWindow.open(_this.map, marker);
   });

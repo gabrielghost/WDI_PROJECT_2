@@ -1,20 +1,14 @@
 #map {
-  height: 50%;
+  height: 90%;
   width: 100%;
   position: fixed !important;
   bottom: 0;
   left: 0;
-
-  @media screen and (min-width: 750px) {
-      height: 100%;
-      width: calc(100% - 350px);
-      left: 350px;
-      top: 0;
-  }
+  background-color: #16243b;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
-  height: 100%;
+  height: 80%;
   margin: 0;
   padding: 0;
   background-color: #16243b;
@@ -23,43 +17,32 @@ html, body {
 //   z-index: 3;
 // }
 .site_logo{
-  position: relative;
-  left: 45%;
-  display: block;
+  position: absolute;
+  display: inline;
+  left: 46%;
+  margin: 0 auto;
   z-index: 1;
-    text-align: center;
+  text-align: center;
 }
-.burger{
-  z-index: 1;
+.logout{
+  color: white;
+  font-size: 15px;
+}
+.greeting{
+  color: white;
+  font-size: 20px;
+
 }
 .sidebar {
 background-color: #16243b;
-width: 25%;
+width: 20%;
 height: 100%;
 }
 
-.sidebar__heading {
-    margin-bottom: $spacing;
+// .sidebar__heading {
+//     margin-bottom: $spacing;
+// }
+
+.transactionInfo li {
+  list-style-type: none;
 }
-// #floating-panel {
-//   position: absolute;
-//   top: 10px;
-//   left: 25%;
-//   z-index: 5;
-//   background-color: #fff;
-//   padding: 5px;
-//   border: 1px solid #999;
-//   text-align: center;
-//   font-family: 'Roboto','sans-serif';
-//   line-height: 30px;
-//   padding-left: 10px;
-// }
-// #floating-panel {
-//   background-color: #fff;
-//   border: 1px solid #999;
-//   left: 25%;
-//   padding: 5px;
-//   position: absolute;
-//   top: 10px;
-//   z-index: 5;
-// }
