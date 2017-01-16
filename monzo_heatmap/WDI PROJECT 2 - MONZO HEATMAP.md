@@ -57,6 +57,24 @@ AIMS
 
 - Explore the possibility of multiple heatmaps for different genres
 
+Conclusions @ 6pm. 
+
+Today has been difficult. I have learnt that my system hasn't been created in the correct way and needs a rebuild.
+
+A users clientID and clientSecret are needed to access the information. This is information that needs to be stored in the front end, unless we commit users' transaction details to the database which doesn't seem to be the correct approach.
+
+- - - - - -
+
+Day 6 - Monday
+
+After a low point last night I have managed to work through the rebuild so that the heatmap generates - hopefully for any user, although that needs to be tested.
+
+My aims for today now are to show a pop up for the locations with a little bit more information about the locations.
+
+OR Top 5 locations by total spend?
+
+I'm going to experiment with markers to see if I can get things looking a little better with them.
+
 
 
 
