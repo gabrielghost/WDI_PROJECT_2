@@ -115,13 +115,14 @@ App.sortData = function (data) {
     if (transaction.merchant) {
       var transactionDate = transaction.created;
       var transactionAmount = transaction.amount;
-      var transactionDescription = transaction.merchant.metadata.google_places_name;
+      var transactionDescription = transaction.merchant.name;
       var transactionPlaceId = transaction.merchant.metadata.google_places_id;
       var transactionWebsite = transaction.merchant.metadata.website;
       var transactionTwitter = transaction.merchant.metadata.twitter;
       var lat = transaction.merchant.address.latitude;
       var lng = transaction.merchant.address.longitude;
       var img = transaction.merchant.logo;
+      var emoji = transaction.merchant.emoji;
       var category = transaction.merchant.category;
       var dataProcessed = {
         lat: lat,
@@ -133,7 +134,8 @@ App.sortData = function (data) {
         category: category,
         website: transactionWebsite,
         twitter: transactionTwitter,
-        placeId: transactionPlaceId
+        placeId: transactionPlaceId,
+        emoji: emoji
       };
       transactionArray.push(dataProcessed);
       // App.checkDoubles(data);
@@ -222,6 +224,7 @@ App.markers = function (dataProcessed, data) {
 //   console.log('append!');
 // };
 
+
 App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
   var _this = this;
 
@@ -277,16 +280,30 @@ App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
         $('.info').append('<div class="transactionInfo loggedIn">\n<ul list-style-image="./images/pinIcons/' + App.clickedMarkerArray[0].merchant.category + '.png">\n        <li><p class="price">\xA3' + Math.abs(marker.amount / 100).toFixed(2) + '</p></li>\n        <li><p>' + data1 + '</p><p>' + data + '</p></li>\n</ul>\n        </div>\n        ');
       });
     };
-
-    if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
-    _this.infoWindow = new google.maps.InfoWindow({
-      content: '<div class="multiMarker loggedIn">\n        <img src="' + dataProcessed.img + '" height="50px">\n        <li><a href="' + dataProcessed.website + '" target="_blank">' + dataProcessed.title + '</a></li>\n      </div>'
-    });
-    App.markerHTMLGen();
-    _this.infoWindow.open(_this.map, marker);
+    if (dataProcessed.img && dataProcessed.website) {
+      if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
+      _this.infoWindow = new google.maps.InfoWindow({
+        content: '<div class="multiMarker loggedIn">\n        <img src="' + dataProcessed.img + '" height="50px">\n        <li><a class="infoWindowText" href="' + dataProcessed.website + '">' + dataProcessed.title + '</a></li>\n      </div>'
+      });
+      App.markerHTMLGen();
+      _this.infoWindow.open(_this.map, marker);
+    } else if (dataProcessed.img && !dataProcessed.website) {
+      if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
+      _this.infoWindow = new google.maps.InfoWindow({
+        content: '<div class="multiMarker loggedIn">\n        <img src="' + dataProcessed.img + '" height="50px">\n        <li><p class="infoWindowText">' + dataProcessed.title + '</p></li>\n      </div>'
+      });
+      App.markerHTMLGen();
+      _this.infoWindow.open(_this.map, marker);
+    } else if (!dataProcessed.img && !dataProcessed.website) {
+      if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
+      _this.infoWindow = new google.maps.InfoWindow({
+        content: '<div class="multiMarker loggedIn">\n        <li class="emoji">' + dataProcessed.emoji + '</li>\n        <li><p class="infoWindowText">' + dataProcessed.title + '</p></li>\n        </div>'
+      });
+      App.markerHTMLGen();
+      _this.infoWindow.open(_this.map, marker);
+    }
   });
 };
-
 App.aggregateTotal = function (data) {
   var count = 0;
   $.each(data, function (i, data) {
@@ -297,7 +314,7 @@ App.aggregateTotal = function (data) {
 };
 
 App.greeting = function () {
-  $('.greeting').html('\n      <div class="greeting"><p>Hello ' + App.getAcctDesc().split(' ')[0] + '!</p><div>\n      ');
+  $('.greeting').html('\n      <div class="greeting"><p>Hey ' + App.getAcctDesc().split(' ')[0] + '</p><div>\n      ');
 };
 
 App.loggedInState = function () {
@@ -319,16 +336,25 @@ App.loggedOutState = function () {
 
 App.logout = function () {
   console.log('logged out massive');
+  console.log(App.markerArray);
   //toggle off markers
-  // deleteMarkers();
+  App.killAllMarkers();
   //toggle off heatmap
-  // App.heatmap.setMap(null);
+  App.heatmap.setMap(null);
   //clears all data from local memory
   this.removeAllLocalStorage();
   //clears all data from dynamic memory
   App.heatMapArray = [];
   //makes it look like it's all logged out and proper
   this.loggedOutState();
+};
+
+App.killAllMarkers = function () {
+  if (App.markerArray) {
+    $.each(App.markerArray, function (i, marker) {
+      marker.setVisible(false);
+    });
+  }
 };
 
 App.removeAllLocalStorage = function () {

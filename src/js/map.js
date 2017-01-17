@@ -2,17 +2,131 @@ console.log('working map');
 
 const App     = App || {};
 const google  = google;
-
+const mapStyle= [
+  {
+        featureType: "poi",
+        elementType: "labels",
+        stylers: [
+              { visibility: "off" }
+        ]
+    },
+  {
+        featureType: "transit",
+        elementType: "labels",
+        stylers: [
+              { visibility: "off" }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "lightness": 33
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#f2e5d4"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#c5dac6"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.park",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "lightness": 20
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#c5c6c6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#e4d7c6"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#fbfaf7"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#acbcc9"
+            }
+        ]
+    }
+]
 
 App.initMap = function() {
+
+//   var styledMapType = new google.maps.StyledMapType(
+
 
   App.map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
     center: {lat: 51.521872, lng: -0.082910},
-    mapTypeId: 'roadmap',
+    // mapTypeId: 'roadmap',
+    styles: mapStyle,
     zoomControl: true,
     disableDefaultUI: true
+    // mapTypeControlOptions: {
+    //         mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+    //                 'styled_map']
   });
+  // App.map.mapTypes.set('styled_map', styledMapType);
+  // App.map.setMapTypeId('styled_map');
   App.heatmap = new google.maps.visualization.HeatmapLayer({
     data: getPoints(),
     map: App.map,
@@ -28,6 +142,8 @@ App.initMap = function() {
   App.heatmap.set('radius', App.heatmap.get('radius') ? null : 30);
   App.heatmap.set('gradient', App.heatmap.get('gradient') ? null : gradient);
 };
+
+
 
 //TOGGLE HEATMAP ON OFF
 

@@ -28,8 +28,17 @@ html, body {
   text-align: center;
 }
 .logout{
+  position: relative;
   color: #e64b5f !important;
   font-size: 15px;
+  text-align: right;
+  // float: right;
+  margin: 0 17px;
+  left: 137px;
+  display: inline-block;
+}
+.intro p{
+  color: white;
 }
 .here{
     color: #e64b5f !important;
@@ -37,7 +46,7 @@ html, body {
 .greeting{
   color: white;
   font-size: 20px;
-
+  margin: 50px 15px;
 }
 .sidebar {
 position: relative;
@@ -49,6 +58,7 @@ display: inline-block;
 font-style: 'Helvetica Neue';
 overflow: auto;
 margin: 0;
+padding: 0;
 }
 .monzo h3 {
   color: #9abda9;
@@ -56,6 +66,13 @@ margin: 0;
 .monzo p {
   color: #ead19f;
   font-size: 12px;
+  margin-top: 60px;
+}
+.emoji{
+  font-size: 30px;
+}
+.infoWindowText{
+  font-family: 'BlinkMacSystemFont';
 }
 .multiMarker{
   list-style: none;
@@ -71,6 +88,9 @@ margin: 0;
   color: #1e788c;
   font-size: 30px;
 }
+.intro{
+  margin: 10px 15px;
+}
 .key p{
   font-size:4px;
 }
@@ -83,6 +103,7 @@ margin: 0;
   background-color: #9abda9;
   margin: 10px 15px;
   border-radius: 2px;
+  padding: 5px;
 }
 .form-control{
   // width: 90%;
@@ -91,9 +112,7 @@ margin: 0;
 // .monzo_form{
 
 // }
-.greeting{
-  margin: 50px 0 0 0;
-}
+
 .button{
   width: 100%;
   margin: 5px 0;
