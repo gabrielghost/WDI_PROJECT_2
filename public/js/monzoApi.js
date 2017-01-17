@@ -256,8 +256,12 @@ App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
 
     App.markerHTMLGen = function () {
       $('.info').html('');
+      if (App.clickedMarkerArray.length < 1) {
+        $('.info').html('<div class="aggregateTransaction">\n        \n        </div>');
+      }
       $.each(App.clickedMarkerArray, function (i, marker) {
-        $('.info').append('<div class="transactionInfo">\n        <ul>\n        <li><p>\xA3' + Math.abs(dataProcessed.price / 100).toFixed(2) + '</p></li>\n        <li><p>' + dataProcessed.created + '</p></li>\n        </ul>\n        </div>\n        ');
+        console.log(marker);
+        $('.info').append('<div class="transactionInfo">\n        <ul>\n        <li><p>\xA3' + Math.abs(marker.amount / 100).toFixed(2) + '</p></li>\n        <li><p>' + marker.created + '</p></li>\n        </ul>\n        </div>\n        ');
       });
     };
 

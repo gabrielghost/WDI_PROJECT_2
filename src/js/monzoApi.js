@@ -253,11 +253,17 @@ App.addInfoWindowForLocation = function(dataProcessed, marker, data) {
 
     App.markerHTMLGen = function () {
       $('.info').html(``);
+      if (App.clickedMarkerArray.length<1){
+        $('.info').html(`<div class="aggregateTransaction">
+        
+        </div>`);
+      }
       $.each(App.clickedMarkerArray, (i, marker) => {
+        console.log(marker);
         $('.info').append(`<div class="transactionInfo">
         <ul>
-        <li><p>£${(Math.abs(dataProcessed.price/100)).toFixed(2)}</p></li>
-        <li><p>${dataProcessed.created}</p></li>
+        <li><p>£${(Math.abs(marker.amount/100)).toFixed(2)}</p></li>
+        <li><p>${marker.created}</p></li>
         </ul>
         </div>
         `);

@@ -42,6 +42,8 @@ width: 240px;
 height: 100%;
 display: inline-block;
 font-style: 'Helvetica Neue';
+overflow: auto;
+margin: 0;
 }
 .monzo h3 {
   color: #9abda9;
@@ -49,6 +51,14 @@ font-style: 'Helvetica Neue';
 .monzo p {
   color: #ead19f;
   font-size: 12px;
+}
+.transactionInfo{
+  background-color: #fcf1db;
+  margin: 5px 15px;
+}
+.aggregateTransaction{
+  background-color: #fcf1db;
+  margin: 5px 15px;
 }
 .form-control{
   width: 90%;
