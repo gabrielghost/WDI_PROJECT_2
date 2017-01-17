@@ -3,7 +3,7 @@
 var App = App || {};
 var google = google;
 
-var params = getJsonFromUrl();
+var params = urlFaffJson();
 
 App.apiUrl = 'http://localhost:3000/api';
 App.redirectUri = 'http%3A%2F%2Flocalhost%3A7000%2Fcallback';
@@ -112,34 +112,58 @@ App.heatMapGen = function (data) {
 App.sortData = function (data) {
   $.each(data.transactions, function (i, transaction) {
     if (transaction.merchant) {
-      setTimeout(function () {
-        var transactionDate = transaction.created;
-        var transactionAmount = transaction.amount;
-        var transactionDescription = transaction.merchant.metadata.google_places_name;
-        var transactionWebsite = transaction.merchant.metadata.website;
-        var transactionTwitter = transaction.merchant.metadata.twitter;
-        var lat = transaction.merchant.address.latitude;
-        var lng = transaction.merchant.address.longitude;
-        var img = transaction.merchant.logo;
-        var category = transaction.merchant.category;
-        var dataProcessed = {
-          lat: lat,
-          lng: lng,
-          title: transactionDescription,
-          price: transactionAmount,
-          img: img,
-          category: category,
-          website: transactionWebsite,
-          twitter: transactionTwitter
-        };
-        App.markers(dataProcessed);
-      }, i * 50);
+      var transactionDate = transaction.created;
+      var transactionAmount = transaction.amount;
+      var transactionDescription = transaction.merchant.metadata.google_places_name;
+      var transactionPlaceId = transaction.merchant.metadata.google_places_id;
+      var transactionWebsite = transaction.merchant.metadata.website;
+      var transactionTwitter = transaction.merchant.metadata.twitter;
+      var lat = transaction.merchant.address.latitude;
+      var lng = transaction.merchant.address.longitude;
+      var img = transaction.merchant.logo;
+      var category = transaction.merchant.category;
+      var dataProcessed = {
+        lat: lat,
+        lng: lng,
+        title: transactionDescription,
+        price: transactionAmount,
+        img: img,
+        category: category,
+        website: transactionWebsite,
+        twitter: transactionTwitter,
+        placeId: transactionPlaceId
+      };
+      transactionArray.push(dataProcessed);
+      // App.checkDoubles(data);
+      App.markers(dataProcessed, data);
     }
   });
 };
 
-App.markers = function (dataProcessed) {
-  console.log(dataProcessed.category);
+var transactionArray = [];
+var transactionDupes = [];
+//
+// App.checkDoubles = function(data) {
+//   $.each(data.transactions, (i, transaction) => {
+//     if (transaction.placeId==dataProcessed.placeId){
+//       return transactionDupes.push(dataProcessed);
+//     }
+//   });
+
+// if (transactionArray.length != 0) {
+//   for (var i=0; i< transactionArray.length; i++) {
+//     const dataOne = dataProcessed.placeId;
+//     const existingTransaction = transactionArray[i];
+//     const pos = existingTransaction.getPosition();
+//     if (dataOne.placeId.equals(pos)) {
+//       console.log('fart!');
+//     }
+//   }
+// }
+// };
+
+App.markers = function (dataProcessed, data) {
+  console.log(data.transactions.length);
   var icons = {
     general: {
       icon: '/images/pinIcons/general.png'
@@ -158,19 +182,37 @@ App.markers = function (dataProcessed) {
     }
   };
   var latlng = new google.maps.LatLng(dataProcessed.lat, dataProcessed.lng);
-  console.log(dataProcessed.category);
+  // console.log(dataProcessed.category);
   var marker = new google.maps.Marker({
     position: latlng,
     map: App.map,
     animation: google.maps.Animation.DROP,
     icon: icons[dataProcessed.category].icon
   });
-  App.addInfoWindowForLocation(dataProcessed, marker);
+  // $.each(data.transactions, (i, transaction) => {
+  //   if(transaction.merchant.metadata.google_places_id==dataProcessed.placeId){
+  //     App.appendInfoWindowForLocation(dataProcessed, marker);
+  //   }  else {
+  //     App.addInfoWindowForLocation(dataProcessed, marker);
+  //   }
+  // });
+  App.addInfoWindowForLocation(dataProcessed, marker, data);
 };
 
-App.addInfoWindowForLocation = function (dataProcessed, marker) {
+// App.appendInfoWindowForLocation = function(){
+//   console.log('append!');
+// };
+
+App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
   var _this = this;
 
+  //   $.each(data.transactions, (i, transaction) => {
+  //     var existingTransaction = data.transactions[i];
+  //     var pos = existingTransaction.getPosition();
+  //     if (dataProcessed.placeId.equals(pos)){
+  //       console.log('eh');
+  //     }
+  //   });
   google.maps.event.addListener(marker, 'click', function () {
     if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
     _this.infoWindow = new google.maps.InfoWindow({
@@ -213,8 +255,9 @@ App.removeAllLocalStorage = function () {
   return window.localStorage.clear();
 };
 
-function getJsonFromUrl() {
+function urlFaffJson() {
   var query = location.search.substr(1);
+  // console.log(location.search.substr(1));
   var result = {};
   query.split('&').forEach(function (part) {
     var item = part.split('=');
@@ -277,7 +320,6 @@ function createForm() {
 }
 
 //http://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/
-
 
 function getURLParamsMonzo(name) {
   var param = decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
