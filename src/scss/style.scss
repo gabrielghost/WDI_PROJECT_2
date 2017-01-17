@@ -1,3 +1,5 @@
+@import 'pace';
+
 #map {
   height: 100%;
   width: 100%;
@@ -26,8 +28,11 @@ html, body {
   text-align: center;
 }
 .logout{
-  color: white;
+  color: #e64b5f !important;
   font-size: 15px;
+}
+.here{
+    color: #e64b5f !important;
 }
 .greeting{
   color: white;
@@ -52,31 +57,56 @@ margin: 0;
   color: #ead19f;
   font-size: 12px;
 }
+.multiMarker{
+  list-style: none;
+  text-align: center;
+}
+.multiMarker img{
+  list-style: none;
+  text-align: center;
+  margin: 2px;
+  border-radius: 5px;
+}
+.price{
+  color: #1e788c;
+  font-size: 30px;
+}
+.key p{
+  font-size:4px;
+}
 .transactionInfo{
   background-color: #fcf1db;
   margin: 5px 15px;
+  border-radius: 2px;
 }
 .aggregateTransaction{
-  background-color: #fcf1db;
-  margin: 5px 15px;
+  background-color: #9abda9;
+  margin: 10px 15px;
+  border-radius: 2px;
 }
 .form-control{
-  width: 90%;
-  margin: 5px;
+  // width: 90%;
+  // margin: 5px;
 }
+// .monzo_form{
+
+// }
 .greeting{
   margin: 50px 0 0 0;
 }
 .button{
-  width: 90%;
-  margin: 5px;
+  width: 100%;
+  margin: 5px 0;
   height: 40px;
   padding: 6px;
 }
 .login_sidebar{
-margin: 50px 0 0 0;
+margin: 50px 5px 0 5px;
+width: 90%;
 }
-
+.info{
+  margin: 10px 0;
+}
 // .sidebar__heading {
 //     margin-bottom: $spacing;
 // }

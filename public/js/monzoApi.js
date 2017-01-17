@@ -38,6 +38,7 @@ App.init = function () {
     });
   } else {
     validTokenCheck();
+    console.log('valid token check function');
   }
 };
 
@@ -56,11 +57,10 @@ function validTokenCheck() {
     }).done(function (data) {
       console.log(data);
       App.getAcctIdFromMonzo();
-    }).fail(function (data) {
-      console.log('tokenfail');
-      console.log(data);
-      App.logout();
     });
+  } else {
+    console.log('tokenfail');
+    App.logout();
   }
 }
 
@@ -183,19 +183,19 @@ App.markers = function (dataProcessed, data) {
       icon: '/images/pinIcons/transport.png'
     },
     bills: {
-      icon: '/images/pinIcons/transport.png'
+      icon: '/images/pinIcons/bills.png'
     },
     cash: {
-      icon: '/images/pinIcons/transport.png'
+      icon: '/images/pinIcons/cash.png'
     },
     holidays: {
-      icon: '/images/pinIcons/transport.png'
+      icon: '/images/pinIcons/holidays.png'
     },
     expenses: {
-      icon: '/images/pinIcons/transport.png'
+      icon: '/images/pinIcons/expenses.png'
     },
     shopping: {
-      icon: '/images/pinIcons/transport.png'
+      icon: '/images/pinIcons/shopping.png'
     }
   };
   var latlng = new google.maps.LatLng(dataProcessed.lat, dataProcessed.lng);
@@ -234,12 +234,14 @@ App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
   //   });
   google.maps.event.addListener(marker, 'click', function () {
     App.clickedMarkerArray = [];
+    // App.clickedMarkerArrayAll = [];
     // console.log(App.markerArray[1].position.lat());
     // console.log(data.transactions[1].merchant.address.latitude);
     // console.log(marker.position.lat());
     $.each(data.transactions, function (i, markerArr) {
       if (markerArr.merchant) {
-        if (markerArr.merchant.address.latitude == marker.position.lat()) {
+        // App.clickedMarkerArrayAll.push(markerArr);
+        if (parseFloat(markerArr.merchant.address.latitude + markerArr.merchant.address.longitude).toFixed(4) == parseFloat(marker.position.lat() + marker.position.lng()).toFixed(4)) {
           App.clickedMarkerArray.push(markerArr);
         }
       }
@@ -256,22 +258,42 @@ App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
 
     App.markerHTMLGen = function () {
       $('.info').html('');
-      if (App.clickedMarkerArray.length < 1) {
-        $('.info').html('<div class="aggregateTransaction">\n        \n        </div>');
-      }
+      // if (App.clickedMarkerArray[0].merchant.emoji&&App.clickedMarkerArray[0].merchant.name){
+      // console.log(App.clickedMarkerArray.merchant.name);
+      console.log(App.clickedMarkerArray.merchant);
+      var aggregateTotal = App.aggregateTotal(App.clickedMarkerArray);
+      $('.info').html('<div class="aggregateTransaction loggedIn">\n        <h4>' + App.clickedMarkerArray[0].merchant.emoji + App.clickedMarkerArray[0].merchant.name + '</h4>\n        <p class="key"><img src="./images/pinIcons/' + App.clickedMarkerArray[0].merchant.category + '.png">:' + App.clickedMarkerArray[0].merchant.category + '</p>\n        <p>Total spend: \xA3' + (aggregateTotal / 100).toFixed(2) + '</p>\n        </div>');
+      // } else {
+      //   $('.info').html(`<div class="aggregateTransaction loggedIn">
+      //   <h4>${App.clickedMarkerArray[0].merchant.name}</h4>
+      //   <p>Total spend: £${((aggregateTotal/100)).toFixed(2)}</p>
+      //   </div>`);
+      // }
       $.each(App.clickedMarkerArray, function (i, marker) {
-        console.log(marker);
-        $('.info').append('<div class="transactionInfo">\n        <ul>\n        <li><p>\xA3' + Math.abs(marker.amount / 100).toFixed(2) + '</p></li>\n        <li><p>' + marker.created + '</p></li>\n        </ul>\n        </div>\n        ');
+
+        var data = moment(marker.created).format('LL');
+        var data1 = moment(marker.created).format('LT');
+
+        $('.info').append('<div class="transactionInfo loggedIn">\n<ul list-style-image="./images/pinIcons/' + App.clickedMarkerArray[0].merchant.category + '.png">\n        <li><p class="price">\xA3' + Math.abs(marker.amount / 100).toFixed(2) + '</p></li>\n        <li><p>' + data1 + '</p><p>' + data + '</p></li>\n</ul>\n        </div>\n        ');
       });
     };
 
     if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
     _this.infoWindow = new google.maps.InfoWindow({
-      content: '<div class="multiMarker">\n        <img src="' + dataProcessed.img + '" height="50px">\n        <li><a href="' + dataProcessed.website + '" target="_blank">' + dataProcessed.title + '</a></li>\n      </div>'
+      content: '<div class="multiMarker loggedIn">\n        <img src="' + dataProcessed.img + '" height="50px">\n        <li><a href="' + dataProcessed.website + '" target="_blank">' + dataProcessed.title + '</a></li>\n      </div>'
     });
     App.markerHTMLGen();
     _this.infoWindow.open(_this.map, marker);
   });
+};
+
+App.aggregateTotal = function (data) {
+  var count = 0;
+  $.each(data, function (i, data) {
+    console.log(data.amount);
+    count = count + Math.abs(data.amount);
+  });
+  return count;
 };
 
 App.greeting = function () {
@@ -284,17 +306,23 @@ App.loggedInState = function () {
 };
 
 App.loggedOutState = function () {
+  console.log('logged out state working');
   createForm();
   $('.loggedIn').hide();
   $('.loggedOut').show();
 };
 
+// function deleteMarkers() {
+//         clearMarkers();
+//         markers = [];
+//       }
+
 App.logout = function () {
   console.log('logged out massive');
   //toggle off markers
-  // App.setMapOnAll(null);
+  // deleteMarkers();
   //toggle off heatmap
-  App.heatmap.setMap(null);
+  // App.heatmap.setMap(null);
   //clears all data from local memory
   this.removeAllLocalStorage();
   //clears all data from dynamic memory
@@ -352,7 +380,7 @@ App.clicked = function () {
 };
 
 function createForm() {
-  $('.monzo').html('\n    <div class="login_sidebar">\n    <h3>Please login here with your developer credentials to see your spend information:</h3>\n    <div class="monzo_form loggedOut">\n\n    <input type="text" class="clientId loggedOut form-control" placeholder="clientId" name="clientId">\n\n    <input type="text" class="clientSecret loggedOut form-control" placeholder="clientSecret" name="clientSecret">\n    <a class="button login loggedOut btn btn-lg btn-primary btn-block" href="">Login</a>\n    </div>\n    <p>psssst! don\'t have any? Don\'t worry! It\'s super simple to get some - just sign up <a href="https://developers.getmondo.co.uk/">here</a>.</p>\n    </div>\n      ');
+  $('.monzo').html('\n    <div class="login_sidebar">\n    <h3>Please login here with your developer credentials to see your spend information:</h3>\n    <div class="monzo_form loggedOut">\n\n    <input type="text" class="clientId loggedOut form-control" placeholder="clientId" name="clientId">\n\n    <input type="text" class="clientSecret loggedOut form-control" placeholder="clientSecret" name="clientSecret">\n    <a class="button login loggedOut btn btn-lg btn-primary btn-block" href="">Login</a>\n    </div>\n    <p>psssst! don\'t have any? Don\'t worry! It\'s super simple to get some - just sign up <a class="here" href="https://developers.getmondo.co.uk/">here</a>.</p>\n    </div>\n      ');
   console.log('form created');
   $('.login').on('click', function (event) {
     event.preventDefault();

@@ -8,6 +8,8 @@ const webRoutes      = require('./config/webRoutes');
 const config         = require('./config/config');
 const port           = process.env.PORT || 3000;
 const morgan         = require('morgan');
+const moment         = require('moment');
+moment().format();
 
 const databaseURL = process.env.MONGOLAB_URL || 'mongodb://localhost:27017/monzo-heatmap';
 mongoose.connect(databaseURL);
