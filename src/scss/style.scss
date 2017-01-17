@@ -1,15 +1,17 @@
 #map {
-  height: 90%;
+  height: 100%;
   width: 100%;
   position: fixed !important;
+  z-index: 1;
   bottom: 0;
   left: 0;
   background-color: #16243b;
 }
-/* Optional: Makes the sample page fill the window. */
+
 html, body {
-  height: 80%;
+  height: 100%;
   margin: 0;
+  z-index: 0;
   padding: 0;
   background-color: #16243b;
 }
@@ -17,10 +19,9 @@ html, body {
 //   z-index: 3;
 // }
 .site_logo{
-  position: absolute;
+  position: relative;
   display: inline;
-  left: 46%;
-  margin: 0 auto;
+  margin: 0 80px 0 80px;
   z-index: 1;
   text-align: center;
 }
@@ -34,9 +35,36 @@ html, body {
 
 }
 .sidebar {
+position: relative;
 background-color: #16243b;
-width: 20%;
+z-index: 2;
+width: 240px;
 height: 100%;
+display: inline-block;
+font-style: 'Helvetica Neue';
+}
+.monzo h3 {
+  color: #9abda9;
+}
+.monzo p {
+  color: #ead19f;
+  font-size: 12px;
+}
+.form-control{
+  width: 90%;
+  margin: 5px;
+}
+.greeting{
+  margin: 50px 0 0 0;
+}
+.button{
+  width: 90%;
+  margin: 5px;
+  height: 40px;
+  padding: 6px;
+}
+.login_sidebar{
+margin: 50px 0 0 0;
 }
 
 // .sidebar__heading {

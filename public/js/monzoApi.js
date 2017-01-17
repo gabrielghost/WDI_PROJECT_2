@@ -15,6 +15,7 @@ App.$header = $('header');
 App.heatMapArray = [];
 
 App.init = function () {
+  this.markerArray = [];
   $('.logout').on('click', this.logout.bind(this));
   if (params.code) {
     var options = {
@@ -127,6 +128,7 @@ App.sortData = function (data) {
         lng: lng,
         title: transactionDescription,
         price: transactionAmount,
+        created: transactionDate,
         img: img,
         category: category,
         website: transactionWebsite,
@@ -179,6 +181,21 @@ App.markers = function (dataProcessed, data) {
     },
     transport: {
       icon: '/images/pinIcons/transport.png'
+    },
+    bills: {
+      icon: '/images/pinIcons/transport.png'
+    },
+    cash: {
+      icon: '/images/pinIcons/transport.png'
+    },
+    holidays: {
+      icon: '/images/pinIcons/transport.png'
+    },
+    expenses: {
+      icon: '/images/pinIcons/transport.png'
+    },
+    shopping: {
+      icon: '/images/pinIcons/transport.png'
     }
   };
   var latlng = new google.maps.LatLng(dataProcessed.lat, dataProcessed.lng);
@@ -189,6 +206,9 @@ App.markers = function (dataProcessed, data) {
     animation: google.maps.Animation.DROP,
     icon: icons[dataProcessed.category].icon
   });
+
+  App.markerArray.push(marker);
+
   // $.each(data.transactions, (i, transaction) => {
   //   if(transaction.merchant.metadata.google_places_id==dataProcessed.placeId){
   //     App.appendInfoWindowForLocation(dataProcessed, marker);
@@ -198,7 +218,6 @@ App.markers = function (dataProcessed, data) {
   // });
   App.addInfoWindowForLocation(dataProcessed, marker, data);
 };
-
 // App.appendInfoWindowForLocation = function(){
 //   console.log('append!');
 // };
@@ -214,16 +233,45 @@ App.addInfoWindowForLocation = function (dataProcessed, marker, data) {
   //     }
   //   });
   google.maps.event.addListener(marker, 'click', function () {
+    App.clickedMarkerArray = [];
+    // console.log(App.markerArray[1].position.lat());
+    // console.log(data.transactions[1].merchant.address.latitude);
+    // console.log(marker.position.lat());
+    $.each(data.transactions, function (i, markerArr) {
+      if (markerArr.merchant) {
+        if (markerArr.merchant.address.latitude == marker.position.lat()) {
+          App.clickedMarkerArray.push(markerArr);
+        }
+      }
+
+      // if (markerArr.position.lat() == marker.position.lat()){
+      //   App.clickedMarkerArray.push(marker);
+      //   console.log(App.clickedMarkerArray);
+      // }
+    });
+    // App.markerArray === all markers on the page
+    // When theres a click, filter through the array to find the markers that have the same lat/lng values
+    // marker.lat() === "4.51140"
+    // That will return a new array with all the markers with the same lat/lng which you can then loop over to get the data then append it to the info window.
+
+    App.markerHTMLGen = function () {
+      $('.info').html('');
+      $.each(App.clickedMarkerArray, function (i, marker) {
+        $('.info').append('<div class="transactionInfo">\n        <ul>\n        <li><p>\xA3' + Math.abs(dataProcessed.price / 100).toFixed(2) + '</p></li>\n        <li><p>' + dataProcessed.created + '</p></li>\n        </ul>\n        </div>\n        ');
+      });
+    };
+
     if (typeof _this.infoWindow !== 'undefined') _this.infoWindow.close();
     _this.infoWindow = new google.maps.InfoWindow({
-      content: '<div class="transactionInfo">\n      <ul>\n      <li><img src="' + dataProcessed.img + '" height="50px"></li>\n      <li><a href="' + dataProcessed.website + '" target="_blank">' + dataProcessed.title + '</a></li>\n      <li><p>\xA3' + Math.abs(dataProcessed.price / 100).toFixed(2) + '</p></li>\n      </ul>\n      </div>\n      '
+      content: '<div class="multiMarker">\n        <img src="' + dataProcessed.img + '" height="50px">\n        <li><a href="' + dataProcessed.website + '" target="_blank">' + dataProcessed.title + '</a></li>\n      </div>'
     });
+    App.markerHTMLGen();
     _this.infoWindow.open(_this.map, marker);
   });
 };
 
 App.greeting = function () {
-  $('.greeting').html('\n      <p>Hello ' + App.getAcctDesc().split(' ')[0] + '!</p>\n      ');
+  $('.greeting').html('\n      <div class="greeting"><p>Hello ' + App.getAcctDesc().split(' ')[0] + '!</p><div>\n      ');
 };
 
 App.loggedInState = function () {
@@ -300,7 +348,7 @@ App.clicked = function () {
 };
 
 function createForm() {
-  $('.monzo').html('\n      <div class="monzo_form loggedOut">\n      <input type="text" class="clientId loggedOut" placeholder="clientId" name="clientId">\n      <input type="text" class="clientSecret loggedOut" placeholder="clientSecret" name="clientSecret">\n      <a class="button login loggedOut waves-effect" href="">Login</a>\n      </div>\n      ');
+  $('.monzo').html('\n    <div class="login_sidebar">\n    <h3>Please login here with your developer credentials to see your spend information:</h3>\n    <div class="monzo_form loggedOut">\n\n    <input type="text" class="clientId loggedOut form-control" placeholder="clientId" name="clientId">\n\n    <input type="text" class="clientSecret loggedOut form-control" placeholder="clientSecret" name="clientSecret">\n    <a class="button login loggedOut btn btn-lg btn-primary btn-block" href="">Login</a>\n    </div>\n    <p>psssst! don\'t have any? Don\'t worry! It\'s super simple to get some - just sign up <a href="https://developers.getmondo.co.uk/">here</a>.</p>\n    </div>\n      ');
   console.log('form created');
   $('.login').on('click', function (event) {
     event.preventDefault();

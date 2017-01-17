@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>monzo heatmap</title>
- <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css"> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmAPvKiTVFQ_cBgrvHQAItCnfXgbzaFJs&libraries=visualization">
 </script>
@@ -17,14 +16,16 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
   <header>
+
   </header>
   <body>
     <div class="sidebar">
       <img src="/images/monzo_icon.png" class="site_logo" alt="" height="75px">
       <div class="greeting loggedIn"></div>
       <a class="logout loggedIn" href="#">logout</a>
-      <div class="monzo"></div>
+          <div class="monzo"></div>
+          <div class="info"></div>
     </div>
-    <div id="map"></div>
+        <div id="map"></div>
 </body>
 </html>
