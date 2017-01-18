@@ -447,9 +447,9 @@ function createForm(){
     <h3>Please login here with your developer credentials to see your spend information:</h3>
     <div class="monzo_form loggedOut">
 
-    <input type="text" class="clientId loggedOut form-control" placeholder="clientId" name="clientId">
+    <input type="text" class="clientId loggedOut form-control" placeholder="Client ID" name="clientId">
 
-    <input type="text" class="clientSecret loggedOut form-control" placeholder="clientSecret" name="clientSecret">
+    <input type="text" class="clientSecret loggedOut form-control" placeholder="Client Secret" name="clientSecret">
     <a class="button login loggedOut btn btn-lg btn-primary btn-block" href="">Login</a>
     </div>
     <p>psssst! don't have any? Don't worry! It's super simple to get some - just sign up <a class="here" href="https://developers.getmondo.co.uk/">here</a>.</p>

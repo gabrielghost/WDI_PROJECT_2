@@ -415,7 +415,7 @@ App.clicked = function () {
 };
 
 function createForm() {
-  $('.monzo').html('\n    <div class="login_sidebar">\n    <h3>Please login here with your developer credentials to see your spend information:</h3>\n    <div class="monzo_form loggedOut">\n\n    <input type="text" class="clientId loggedOut form-control" placeholder="clientId" name="clientId">\n\n    <input type="text" class="clientSecret loggedOut form-control" placeholder="clientSecret" name="clientSecret">\n    <a class="button login loggedOut btn btn-lg btn-primary btn-block" href="">Login</a>\n    </div>\n    <p>psssst! don\'t have any? Don\'t worry! It\'s super simple to get some - just sign up <a class="here" href="https://developers.getmondo.co.uk/">here</a>.</p>\n    </div>\n      ');
+  $('.monzo').html('\n    <div class="login_sidebar">\n    <h3>Please login here with your developer credentials to see your spend information:</h3>\n    <div class="monzo_form loggedOut">\n\n    <input type="text" class="clientId loggedOut form-control" placeholder="Client ID" name="clientId">\n\n    <input type="text" class="clientSecret loggedOut form-control" placeholder="Client Secret" name="clientSecret">\n    <a class="button login loggedOut btn btn-lg btn-primary btn-block" href="">Login</a>\n    </div>\n    <p>psssst! don\'t have any? Don\'t worry! It\'s super simple to get some - just sign up <a class="here" href="https://developers.getmondo.co.uk/">here</a>.</p>\n    </div>\n      ');
   console.log('form created');
   $('.login').on('click', function (event) {
     event.preventDefault();
