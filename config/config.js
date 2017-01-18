@@ -1,6 +1,6 @@
 module.exports = {
   port: process.env.PORT || 3000,
-  db: 'mongodb://localhost/monzo-heatmap',
+  db: process.env.MONGODB_URI || 'mongodb://localhost/monzo-heatmap',
   secret: process.env.SECRET || 'money is energy',
   clientId: process.env.MONZO_CLIENT_ID || 'this is not working',
   clientSecret: process.env.MONZO_CLIENT_SECRET,
