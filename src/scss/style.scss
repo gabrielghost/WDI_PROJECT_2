@@ -43,10 +43,11 @@ html, body {
 .here{
     color: #e64b5f !important;
 }
-.greeting{
+.greetingCase{
   color: white;
   font-size: 20px;
   margin: 50px 15px;
+  height: 50px;
 }
 .sidebar {
 position: relative;
@@ -87,6 +88,7 @@ padding: 0;
 .price{
   color: #1e788c;
   font-size: 30px;
+  text-align: left !important;
 }
 .intro{
   margin: 10px 15px;
@@ -99,11 +101,19 @@ padding: 0;
   margin: 5px 15px;
   border-radius: 2px;
 }
+.transactionInfo p{
+  margin: 0;
+  padding: 0 5px;
+  text-align: right;
+}
 .aggregateTransaction{
   background-color: #9abda9;
   margin: 10px 15px;
   border-radius: 2px;
   padding: 5px;
+}
+.aggregateTransaction h4{
+  text-align: center;
 }
 .form-control{
   // width: 90%;

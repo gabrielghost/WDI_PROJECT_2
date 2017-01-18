@@ -209,8 +209,12 @@ App.markers = function(dataProcessed, data){
     animation: google.maps.Animation.DROP,
     icon: icons[dataProcessed.category].icon
   });
-
-  App.markerArray.push(marker);
+  const timeout = 100;
+  // function addMarkerWithTimeout(marker, timeout) {
+  window.setTimeout(function() {
+    App.markerArray.push(marker);
+  }, timeout);
+  // }
 
   // $.each(data.transactions, (i, transaction) => {
   //   if(transaction.merchant.metadata.google_places_id==dataProcessed.placeId){
@@ -265,7 +269,7 @@ App.addInfoWindowForLocation = function(dataProcessed, marker, data) {
       console.log(App.clickedMarkerArray.merchant);
       const aggregateTotal = App.aggregateTotal(App.clickedMarkerArray);
       $('.info').html(`<div class="aggregateTransaction loggedIn">
-        <h4>${App.clickedMarkerArray[0].merchant.emoji}${App.clickedMarkerArray[0].merchant.name}</h4>
+        <h4>${App.clickedMarkerArray[0].merchant.emoji}  ${App.clickedMarkerArray[0].merchant.name}</h4>
         <p class="key"><img src="./images/pinIcons/${App.clickedMarkerArray[0].merchant.category}.png">:${App.clickedMarkerArray[0].merchant.category}</p>
         <p>Total spend: £${((aggregateTotal/100)).toFixed(2)}</p>
         </div>`);
@@ -295,7 +299,7 @@ if (dataProcessed.img && dataProcessed.website){
     this.infoWindow = new google.maps.InfoWindow({
       content: `<div class="multiMarker loggedIn">
         <img src="${dataProcessed.img}" height="50px">
-        <li><a class="infoWindowText" href="${dataProcessed.website}">${dataProcessed.title}</a></li>
+        <li><a class="infoWindowText" href="${dataProcessed.website}" target="_blank">${dataProcessed.title}</a></li>
       </div>`
     });
     App.markerHTMLGen();
@@ -336,7 +340,7 @@ App.aggregateTotal = function(data){
 
 
 App.greeting = function(){
-  $('.greeting').html(`
+  $('.greetingCase').html(`
       <div class="greeting"><p>Hey ${App.getAcctDesc().split(' ')[0]}</p><div>
       `);
 };
@@ -361,10 +365,15 @@ App.loggedOutState = function(){
 App.logout = function(){
   console.log('logged out massive');
   console.log(App.markerArray);
+  if (this.infoWindow){
+    this.infoWindow.close()
+  }
   //toggle off markers
   App.killAllMarkers();
   //toggle off heatmap
-  App.heatmap.setMap(null);
+  if (App.heatmap){
+    App.heatmap.setMap(null);
+  }
   //clears all data from local memory
   this.removeAllLocalStorage();
   //clears all data from dynamic memory
