@@ -4,9 +4,9 @@ const google = google;
 
 const params   = urlFaffJson();
 
-App.apiUrl        = 'http://localhost:3000/api';
-App.redirectUri  = 'http%3A%2F%2Flocalhost%3A7000%2Fcallback';
-App.redirect_uri_r = 'http://localhost:7000/callback';
+
+App.redirectUri  = 'https%3A%2F%2Fmonzo-heatmap%3Aherokuapp%3Acom%2Fcallback';
+App.redirect_uri_r = 'https://monzo-heatmap.herokuapp.com/callback';
 
 App.$monzo        = $('.monzo');
 App.$header       = $('header');
