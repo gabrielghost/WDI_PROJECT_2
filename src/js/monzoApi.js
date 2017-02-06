@@ -114,18 +114,18 @@ App.heatMapGen = function(data){
 App.sortData = function(data){
   $.each(data.transactions, (i, transaction) => {
     if (transaction.merchant) {
-      const transactionDate   = transaction.created;
-      const transactionAmount = transaction.amount;
-      const transactionDescription   = transaction.merchant.name;
-      const transactionPlaceId   = transaction.merchant.metadata.google_places_id;
-      const transactionWebsite   = transaction.merchant.metadata.website;
-      const transactionTwitter   = transaction.merchant.metadata.twitter;
-      const lat               = transaction.merchant.address.latitude;
-      const lng              = transaction.merchant.address.longitude;
-      const img              = transaction.merchant.logo;
-      const emoji              = transaction.merchant.emoji;
-      const category              = transaction.merchant.category;
-      const dataProcessed = {
+      const transactionDate           = transaction.created;
+      const transactionAmount         = transaction.amount;
+      const transactionDescription    = transaction.merchant.name;
+      const transactionPlaceId        = transaction.merchant.metadata.google_places_id;
+      const transactionWebsite        = transaction.merchant.metadata.website;
+      const transactionTwitter        = transaction.merchant.metadata.twitter;
+      const lat                       = transaction.merchant.address.latitude;
+      const lng                       = transaction.merchant.address.longitude;
+      const img                       = transaction.merchant.logo;
+      const emoji                     = transaction.merchant.emoji;
+      const category                  = transaction.merchant.category;
+      const dataProcessed             = {
         lat: lat,
         lng: lng,
         title: transactionDescription,
