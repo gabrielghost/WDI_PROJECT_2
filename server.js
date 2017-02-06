@@ -11,8 +11,7 @@ const morgan         = require('morgan');
 const moment         = require('moment');
 moment().format();
 
-const databaseURL = process.env.MONGOLAB_URL || 'mongodb://localhost:27017/monzo-heatmap';
-mongoose.connect(databaseURL);
+mongoose.connect(config.db);
 
 app.use(express.static(`${__dirname}/public`));
 app.use(morgan('dev'));
