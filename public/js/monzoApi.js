@@ -205,7 +205,7 @@ App.markers = function (dataProcessed, data) {
   var marker = new google.maps.Marker({
     position: latlng,
     map: App.map,
-    animation: google.maps.Animation.DROP,
+    // animation: google.maps.Animation.DROP,
     icon: icons[dataProcessed.category].icon
   });
   var timeout = 100;
