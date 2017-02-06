@@ -42,7 +42,7 @@ App.init = function(){
 };
 
 App.home = function(){
-  $.get(`http://localhost:3000/`);
+  $.get(`https://monzo-heatmap.herokuapp.com/`);
 };
 
 function validTokenCheck() {
