@@ -4,6 +4,6 @@ module.exports = {
   secret: process.env.SECRET || 'money is energy',
   clientId: process.env.MONZO_CLIENT_ID || 'this is not working',
   clientSecret: process.env.MONZO_CLIENT_SECRET,
-  redirect_uri: 'https%3A%2F%2Fmonzo-heatmap%3Aherokuapp%3Acom%2Fcallback',
+  redirect_uri: 'https%3A%2F%2Fmonzo-heatmap%2Eherokuapp%2Ecom%2Fcallback',
   redirect_uri_r: 'https://monzo-heatmap.herokuapp.com/callback'
 };
