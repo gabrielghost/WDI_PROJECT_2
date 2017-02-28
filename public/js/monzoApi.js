@@ -5,7 +5,7 @@ var google = google;
 
 var params = urlFaffJson();
 
-App.redirectUri = 'https%3A%2F%2Fmonzo-heatmap%3Aherokuapp%3Acom%2Fcallback';
+App.redirectUri = 'https%3A%2F%2Fmonzo-heatmap%2Eherokuapp%2Ecom%2Fcallback';
 App.redirect_uri_r = 'https://monzo-heatmap.herokuapp.com/callback';
 
 App.$monzo = $('.monzo');
@@ -419,6 +419,7 @@ function createForm() {
   $('.login').on('click', function (event) {
     event.preventDefault();
     console.log('clicked');
+    console.log(url);
     // set client id and secret
     var clientId = $('.clientId').val();
     var clientSecret = $('.clientSecret').val();

@@ -459,6 +459,7 @@ function createForm(){
   $('.login').on('click', function(event) {
     event.preventDefault();
     console.log('clicked');
+    console.log(url);
     // set client id and secret
     var clientId = $('.clientId').val();
     var clientSecret = $('.clientSecret').val();
